@@ -1,12 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
-typedef struct student {
-	int data;
-	char name[50];
-	struct student *next;
-}STU;
+#include "link.h"
 
-void link_create (STU **head, STU *pnew) {
+void link_create (STU **head) {
+	int n = 0;
+	int i = 0;
+	STU * pnew;
+	printf("初始化人数\n");
+	scanf("%d",&n);
+	for (i = 0; i < n; i++) {
+		pnew=(STU *)malloc(sizeof(STU));
+		scanf("%d %s",&pnew->data,pnew->name);
+		_link_create(head, pnew);
+	}
+
+}
+
+void _link_create (STU **head, STU *pnew) {
 
 	STU *pmov=*head;
 
@@ -24,6 +34,9 @@ void link_create (STU **head, STU *pnew) {
 }
 
 void link_print (STU *head) {
+	_link_print(head);
+}
+void _link_print (STU *head) {
 	STU *pb=head;
 	while (pb!=NULL) {
 		printf("%d %s\n",pb->data,pb->name);	
@@ -31,7 +44,15 @@ void link_print (STU *head) {
 	}
 }
 
-void link_delete(STU **head ,int num) {
+void link_delete(STU **head) {
+	int num;
+	printf("删除的节点数字\n");
+
+	scanf("%d",&num);
+	_link_delete(head, num);
+	link_print(*head);
+}
+void _link_delete(STU **head ,int num) {
 	STU *p=*head;
 	STU *pf=NULL;
 	if (*head==NULL) {
@@ -56,7 +77,21 @@ void link_delete(STU **head ,int num) {
 
 }
 
-STU * link_search (STU *head,int num) {
+
+void link_search (STU *head) {
+	int num;
+	printf("要查找的节点\n");
+	scanf("%d",&num);
+	STU *ret;
+	ret = malloc(sizeof(STU));
+	ret = _link_search(head, num);
+	if (ret ==NULL) {
+		return ;
+	}
+	printf("%d %s\n",ret->data,ret->name);
+}
+
+STU * _link_search (STU *head,int num) {
 	STU *p=head;
 	if (head == NULL) {
 		printf("链表为空\n");
@@ -74,7 +109,15 @@ STU * link_search (STU *head,int num) {
 
 }
 
-void link_insert(STU **head ,STU *padd) {
+void link_insert(STU **head) {
+	STU * padd;
+	printf("添加的成员学号和名字\n");
+	padd=(STU *)malloc(sizeof(STU));
+	scanf("%d %s",&padd->data,padd->name);
+	_link_insert(head,padd);
+	link_print(*head);
+}
+void _link_insert(STU **head ,STU *padd) {
 	STU *p=*head;
 	STU *pf=NULL;
 	if ( *head == NULL) {
@@ -114,45 +157,23 @@ int main(int argc, const char *argv[])
 		int x=0;
 		scanf("%d",&x);
 		switch (x) {
-		case 1:
-			printf("初始化人数\n");
-			scanf("%d",&n);
-			for (i = 0; i < n; i++) {
-				pnew=(STU *)malloc(sizeof(STU));
-				scanf("%d %s",&pnew->data,pnew->name);
-				link_create(&head, pnew);
-			}
-			break;
-		case 2:
-			link_print(head);
-			break;
-		case 3:
-			printf("删除的节点数字\n");
-
-			scanf("%d",&num);
-			link_delete(&head, num);
-			link_print(head);
-			break;
-		case 4:
-			printf("添加的成员学号和名字\n");
-			padd=(STU *)malloc(sizeof(STU));
-			scanf("%d %s",&padd->data,padd->name);
-			link_insert(&head,padd);
-			link_print(head);
-			break;
-		case 5:
-			printf("要查找的节点\n");
-			scanf("%d",&num);
-			STU *ret;
-			ret=(STU *)malloc(sizeof(STU));
-			ret=link_search(head ,num);
-			if (ret ==NULL) {
+			case 1:
+				link_create(&head);
 				break;
-			}
-			printf("%d %s\n",ret->data,ret->name);
-			break;
-		default:
-			return 0;
+			case 2:
+				link_print(head);
+				break;
+			case 3:
+				link_delete(&head);
+				break;
+			case 4:
+				link_insert(&head);
+				break;
+			case 5:
+				link_search(head);
+				break;
+			default:
+				return 0;
 		}
 
 	}
