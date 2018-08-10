@@ -73,11 +73,41 @@ STU * link_search (STU *head,int num) {
 
 
 }
+
+void link_insert(STU **head ,STU *padd) {
+	STU *p=*head;
+	STU *pf=NULL;
+	if ( *head == NULL) {
+		*head=padd;
+		padd->next=NULL;
+		return ;
+	}
+	while((p->data <= padd->data )&& (p->next != NULL)) {
+		pf=p;
+		p=p->next;
+	}
+	if (p->data > padd->data) {
+		if(p == *head) {
+			padd->next=p;
+			*head=padd;
+		}
+		else {
+			pf->next=padd;
+			padd->next=p;
+		}
+	}
+	else {
+		p->next=padd;
+		padd->next=NULL;
+	}
+
+}
 int main(int argc, const char *argv[])
 {
-	STU *head,*pnew;
+	STU *head,*pnew,*padd;
 	int i,n=0;
 	int num;
+	padd = NULL;
 	head = NULL;
 	while (1) {
 		printf("create:1 print:2 delete:3 add:4 search:5 exit:x\n");
@@ -103,6 +133,13 @@ int main(int argc, const char *argv[])
 			link_delete(&head, num);
 			link_print(head);
 			break;
+		case 4:
+			printf("添加的成员学号和名字\n");
+			padd=(STU *)malloc(sizeof(STU));
+			scanf("%d %s",&padd->data,padd->name);
+			link_insert(&head,padd);
+			link_print(head);
+			break;
 		case 5:
 			printf("要查找的节点\n");
 			scanf("%d",&num);
@@ -115,7 +152,7 @@ int main(int argc, const char *argv[])
 			printf("%d %s\n",ret->data,ret->name);
 			break;
 		default:
-			break;
+			return 0;
 		}
 
 	}
